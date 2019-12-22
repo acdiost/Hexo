@@ -36,6 +36,13 @@ hexo g
 serverless --debug
 # 移除部署
 sls remove --debug
+
+# 计费规则
+https://cloud.tencent.com/document/product/436/16871
+# 控制台管理
+https://console.cloud.tencent.com/cos5
+# 配置域名
+https://cloud.tencent.com/document/product/436/36638
 ```
 
 ## github.io部署
