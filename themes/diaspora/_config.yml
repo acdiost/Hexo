@@ -15,7 +15,7 @@ autoplay: false
 
 # 默认音乐
 mp3: 
-  - http://link.hhtjim.com/163/5146554.mp3
+  - http://link.hhtjim.com/163/32835377.mp3
   - http://link.hhtjim.com/qq/001faIUs4M2zna.mp3
 
 # 首页封面图, 为空时取文章的cover作为封面
@@ -36,7 +36,7 @@ gitalk:
     # 应用秘钥
     clientSecret: '20ef950e67a9b95b6698b227c0717df682a83803'
     # issue仓库名
-    repo: 'hexo'
+    repo: 'acdiost.github.io'
     # Github名
     owner: 'acdiost'
     # Github名
