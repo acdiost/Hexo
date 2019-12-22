@@ -1,0 +1,59 @@
+# 头部菜单，title: link
+menu:
+  Blog: https://www.acdiost.cc
+  Github: https://github.com/acdiost
+  Twitter: https://twitter.com/acdiost
+  分类: /categories
+  归档: /archives
+  标签云: /tags
+  Mint杂货铺: https://www.acdiost.store
+# 是否显示目录
+TOC: true
+
+# 是否自动播放音乐
+autoplay: false
+
+# 默认音乐
+mp3: 
+  - http://link.hhtjim.com/163/5146554.mp3
+  - http://link.hhtjim.com/qq/001faIUs4M2zna.mp3
+
+# 首页封面图, 为空时取文章的cover作为封面
+welcome_cover: # /img/welcome-cover.jpg
+
+# 默认文章封面图
+cover: /img/cover.jpg
+
+# 是否关闭默认滚动条
+scrollbar: true
+
+# Gitalk 评论插件（https://github.com/gitalk/gitalk）
+gitalk:
+    # 是否自动展开评论框
+    autoExpand: false
+    # 应用编号
+    clientID: '80c0a1731898dd4dd04f'
+    # 应用秘钥
+    clientSecret: '20ef950e67a9b95b6698b227c0717df682a83803'
+    # issue仓库名
+    repo: 'hexo'
+    # Github名
+    owner: 'acdiost'
+    # Github名
+    admin: ['acdiost']
+    # Ensure uniqueness and length less than 50
+    id: location.pathname
+    # Facebook-like distraction free mode
+    distractionFreeMode: false
+
+# 网站关键字
+keywords: acdiost
+
+# 要使用google_analytics进行统计的话，这里需要配置ID
+google_analytics: 
+
+# 网站ico
+favicon: /img/favicon.png
+
+# rss文件
+rss: atom.xml
