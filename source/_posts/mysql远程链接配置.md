@@ -5,7 +5,7 @@ categories:
 tags:
   - mysql
 date: 2019-12-23 11:00:57
-mp3:
+mp3: https://link.hhtjim.com/163/26092806.mp3
 cover: https://www.bing.com/th?id=OHR.AiringGrievances_ZH-CN5830208720_1920x1080.jpg&rf=LaDigue_1920x1080.jpg
 
 ---
@@ -34,6 +34,10 @@ sudo mysql_secure_installation
 **检查防火墙**
 
 修改用户信息
-`create user 'dawn'@'%' identified by '密码';`
-`grant all privileges on *.* to 'dawn'@'%' identified by '密码'with grant option;`
-`flush privileges;`
+```
+create user 'dawn'@'%' identified by '密码';
+grant all privileges on *.* to 'dawn'@'%' identified by '密码'with grant option;
+# mysql8.0 授权更新为不需要认证密码
+grant all privileges on *.* to 'dawn'@'%' with grant option;
+flush privileges;
+```
