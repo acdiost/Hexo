@@ -9,7 +9,9 @@ serverless访问地址：[Dawn](http://my-bucket-1300491156.cos-website.ap-guang
 
 ## 常用操作
 ```
-npm config set registry https://registry.npm.taobao.org
+sudo npm config set registry https://registry.npm.taobao.org
+sudo npm config set registry https://registry.npmjs.org
+npm get registry
 sudo npm install hexo-cli -g
 hexo init blog
 cd blog

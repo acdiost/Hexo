@@ -14,10 +14,19 @@ cover: https://www.bing.com/th?id=OHR.AiringGrievances_ZH-CN5830208720_1920x1080
 
 docker需要链接数据库，发现设置127.0.0.1无法链接
 
+### 安装
+```
+sudo apt-get install mysql-server
+# python相关依赖
+sudo apt-get install libmysqlclient-dev python3-dev
+sudo mysql_secure_installation
+```
+
 ### 修改配置文件
 
 `sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf`
 将`bind-address           = 127.0.0.1`注释掉
+`skip-external-locking`后面新增一行字符集编码`character-set-server=utf8`
 
 重启mysql服务
 `sudo /etc/init.d/mysql restart`
@@ -25,7 +34,6 @@ docker需要链接数据库，发现设置127.0.0.1无法链接
 **检查防火墙**
 
 修改用户信息
-
-`grant all privileges on *.* to '用户名'@'%' identified by '密码'with grant option;`
-
+`create user 'dawn'@'%' identified by '密码';`
+`grant all privileges on *.* to 'dawn'@'%' identified by '密码'with grant option;`
 `flush privileges;`
