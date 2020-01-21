@@ -65,7 +65,7 @@ yum install -y gcc gcc-c++
 tar -zxf bacula-9.4.4.tar.gz
 cd bacula-9.4.4/
 
-./configure  --enable-client-only --enable-smartalloc
+./configure  --enable-client-only
 make && make install
 ```
 
@@ -116,11 +116,6 @@ vi bacula-dir.conf
 ---
 
 ## 测试
-
-> 备份存储物理位置配置
-> vi bacula-dir.conf查找到Autochanger {}位置，填入Address="服务端IP" 有多个Autochanger需全部修改。
-
-
 
 **启动测试**
 
