@@ -10,11 +10,20 @@ cover: https://www.bing.com/th?id=OHR.HighlandsSquirrel_ZH-CN1369975915_1920x108
 ---
 
 
-1. 安装docker，国内安装较慢。完成后将当前用户加入到docker组，便不需使用sudo命令了
-`curl -k -ssl https://get.docker.com | sudo sh`  
-`sudo usermod -aG docker ${USER}`
+1. 安装docker，任选其一，完成后将当前用户加入到docker组，便不需使用sudo命令了
+```
+# 官方
+curl -k -ssl https://get.docker.com | sudo sh
+# 阿里云
+curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
+# daocloud
+curl -sSL https://get.daocloud.io/docker | sh
 
-2. 新建修改daemon将源换成国内的
+# 当前用户加入到docker组
+sudo usermod -aG docker ${USER}
+```
+
+2. 镜像下载加速，新建修改daemon将源换成国内的
 `vi /etc/docker/daemon.json`
 ```
 {
@@ -36,3 +45,5 @@ ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375 --containerd=/run/cont
 systemctl daemon-reload
 systemctl restart docker
 ```
+
+5. File-->settings-->build,execution,deployment-->docker-->TCP socket填入:`tcp://127.0.0.1:2375`
