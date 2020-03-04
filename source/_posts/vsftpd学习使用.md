@@ -6,15 +6,15 @@ tags:
   - vstfpd
   - ftp
 date: 2020-02-28 10:09:59
-mp3: 
+mp3: https://link.hhtjim.com/163/535648576.mp3
 cover: https://www.bing.com//th?id=OHR.OtterCreekVT_ZH-CN0564511657_1920x1080.jpg&rf=LaDigue_1920x1080.jpg
 ---
 
-# vsftpd 3.0.2的学习使用
+# vsftpd 3.0.2使用实操
 
 ## 概述：
 
-完整详细配置在测试之后。
+完整详细配置在测试之后。认真看完实操中内容方有收获！
 
 安装使用：
 
@@ -39,6 +39,15 @@ systemctl enable vsftpd
 被动模式：Passive
 
 ​	服务器端随机端口告诉客户端
+
+```bash
+# 启用并修改被动模式数据传输端口
+pasv_enable=YES
+pasv_min_port=30000
+pasv_max_port=35000
+```
+
+
 
 ​	**需要防火墙放行vsftpd的端口**
 
@@ -69,6 +78,8 @@ anon_max_rate=0 # 限制传输速率，0为不限制 单位:byte
 默认安装好启用就可以使用账户名为anonymous和ftp，无密码。默认可以浏览和下载
 
 ##### 匿名用户上传文件：
+
+##### 测试实操：
 
 ```bash
 # 配置文件启用
@@ -112,7 +123,6 @@ chmod o+w upload
     local: ftp remote: ftp
     227 Entering Passive Mode (192,168,1,21,147,169).
     550 Failed to open file.
-	ftp>
 # 配置文件新增umask=022并重启
     ftp> put ftp
     local: ftp remote: ftp
@@ -130,10 +140,10 @@ chmod o+w upload
     150 Opening BINARY mode data connection for ftp (0 bytes).
     226 Transfer complete.
 # 允许创建目录、删除、修改、覆盖文件
-# 默认已有
-anon_mkdir_write_enable=YES
-# 新增：
-anon_other_write_enable=YES
+    # 默认已有
+    anon_mkdir_write_enable=YES
+    # 新增：
+    anon_other_write_enable=YES
     ftp> ls
     227 Entering Passive Mode (192,168,1,21,75,172).
     150 Here comes the directory listing.
@@ -151,7 +161,7 @@ anon_other_write_enable=YES
     250 Delete operation successful.
 ```
 
-##### 进入目录时提示信息：
+#### 进入目录时提示信息：
 
 在目录下新建`.message`文件，在其中写入要提示的信息即可。配置文件默认开启
 
@@ -214,10 +224,6 @@ chroot_local_user=YES
 chroot_list_enable=YES
 # 名单位置，需手动创建
 chroot_list_file=/etc/vsftpd/chroot_list
-# 修改被动模式数据传输端口
-pasv_enable=YES
-pasv_min_port=30000
-pasv_max_port=35000
 ```
 
 
@@ -226,24 +232,24 @@ pasv_max_port=35000
 
 **`useradd -s /sbin/nologin` 创建的用户无法登陆时:**
 
- ftp 会根据/etc/shells 这个文件判断一个用户是否为有效用户，会阻止那些shell不在/etc/shells里的用户登陆。
+ ftp 会根据/etc/shells 这个文件判断一个用户是否为有效用户，会阻止那些shell不在/etc/shells里的用户登陆。默认是没有`/sbin/nologin`的，需要新增
 
 ```bash
 echo '/sbin/nologin' >> /etc/shells
-#    [root@localhost vsftpd]# cat /etc/shells
-#    /bin/sh
-#    /bin/bash
-#    /usr/bin/sh
-#    /usr/bin/bash
-#    /sbin/nologin
+    [root@localhost vsftpd]# cat /etc/shells
+    /bin/sh
+    /bin/bash
+    /usr/bin/sh
+    /usr/bin/bash
+    /sbin/nologin
 
 ```
 
-
+##### 测试实操：
 
 ```bash
 # 创建两个用户：
-	  [root@localhost upload]# useradd -s /sbin/nologin test
+    [root@localhost upload]# useradd -s /sbin/nologin test
     [root@localhost upload]# passwd test
     Changing password for user test.
     New password:123
@@ -277,7 +283,7 @@ echo '/sbin/nologin' >> /etc/shells
     -rw-r--r--    1 1001     1001          231 Aug 08  2019 .bashrc
     226 Directory send OK.
 # 禁止testban登录
-[root@localhost vsftpd]# cat user_list
+    [root@localhost vsftpd]# cat user_list
     # vsftpd userlist
     # If userlist_deny=NO, only allow users in this file
     # If userlist_deny=YES (default), never allow users in this file, and
@@ -299,7 +305,7 @@ echo '/sbin/nologin' >> /etc/shells
     games
     nobody
     testban
-	# 测试登录
+# 测试登录
     [dawn@192 ~]$ ftp 192.168.1.21
     Connected to 192.168.1.21 (192.168.1.21).
     220 Welcome
@@ -321,7 +327,7 @@ echo '/sbin/nologin' >> /etc/shells
     [root@localhost vsftpd]# cat chroot_list
     test
 
-	# test 可以改变
+    # test 可以改变
     [dawn@192 ~]$ ftp 192.168.1.21
     Connected to 192.168.1.21 (192.168.1.21).
     220 Welcome
@@ -372,14 +378,13 @@ echo '/sbin/nologin' >> /etc/shells
     227 Entering Passive Mode (192,168,1,21,124,173).
     150 Here comes the directory listing.
     226 Directory send OK.
-
 ```
 
 
 
 ##### 完整配置：
 
-`touch /etc/vsftpd/chroot_list`
+创建chroot_list文件，写入需要改变家目录的用户：`touch /etc/vsftpd/chroot_list`
 
 ```bash
 anonymous_enable=NO
@@ -410,10 +415,6 @@ chroot_list_file=/etc/vsftpd/chroot_list
 userlist_enable=YES
 # 黑名单模式user_list中用户不可登录，为NO则只有user_list中用户可登录
 userlist_deny=YES
-# 如下配置可不配
-pasv_enable=YES
-pasv_min_port=30000
-pasv_max_port=35000
 ```
 
 
@@ -467,18 +468,18 @@ superuser
 
 ##### 编辑配置文件/etc/vsftpd/vsftpd.conf，修改并新增如下配置
 
-1. ```bash
-   # 认证文件/etc/pam.d/下
-   pam_service_name=vsftpd.pam
-   # 启用虚拟账户登录
-   guest_enable=YES
-   # 系统映射账户名称
+```bash
+# 认证文件/etc/pam.d/下
+pam_service_name=vsftpd.pam
+# 启用虚拟账户登录
+guest_enable=YES
+# 系统映射账户名称
 guest_username=ftpuser
-   # 虚拟账户配置文件目录路径，其中每个文件名称和用户名对应
-   user_config_dir=/etc/vsftpd/users
-   ```
-   
-2. 修改自定义的匿名配置文件，因为虚拟用户用的也是该配置
+# 虚拟账户配置文件目录路径，其中每个文件名称和用户名对应
+user_config_dir=/etc/vsftpd/users
+```
+
+修改自定义的匿名配置文件，因为虚拟用户用的也是该配置
 
 ##### 编辑单个虚拟用户的权限
 
@@ -490,13 +491,15 @@ echo 'anon_mkdir_write_enable=YES' > /etc/vsftpd/users/createdir
 # 允许虚拟用户上传和其他权限
 echo 'anon_upload_enable=YES' > /etc/vsftpd/users/superuser
 echo 'anon_other_write_enable=YES' >> /etc/vsftpd/users/superuser
+# 指定虚拟用户访问目录
+local_root=/ftp/user/
 ```
 
-##### 测试：
+##### 测试实操：
 
 ```bash
 # 上传文件用户upload
-	Name (192.168.1.21:dawn): upload
+    Name (192.168.1.21:dawn): upload
     331 Please specify the password.
     Password:
     230 Login successful.
@@ -513,7 +516,7 @@ echo 'anon_other_write_enable=YES' >> /etc/vsftpd/users/superuser
     226 Transfer complete.
     # 不可以创建目录
     ftp> mkdir qwe
-	550 Permission denied.
+    550 Permission denied.
 
 # 创建目录createdir，不可传文件
     [dawn@192 ~]$ ftp 192.168.1.21
@@ -541,8 +544,8 @@ echo 'anon_other_write_enable=YES' >> /etc/vsftpd/users/superuser
     350 Ready for RNTO.
     250 Rename successful.
 
-	ftp> delete vsftpd
-	250 Delete operation successful.
+    ftp> delete vsftpd
+    250 Delete operation successful.
 
 ```
 
@@ -574,7 +577,7 @@ ftpd_banner=Welcome
 allow_writeable_chroot=YES
 ```
 
-### 虚拟配置加本地用户配置：
+#### 虚拟配置加本地用户配置：
 
 ```bash
 anonymous_enable=NO
@@ -605,6 +608,79 @@ userlist_deny=YES
 chroot_list_file=/etc/vsftpd/chroot_list
 ```
 
-**创建100M临时大文件：**
 
-`dd if=/dev/zero of=./temp.txt bs=1M count=100`
+
+## 使用openssl加密传输
+
+1. 生成密钥和证书
+
+```bash
+cd /etc/ssl/certs/
+# 生成密钥
+openssl genrsa -out vsftpd.key 2048
+# 生成证书
+openssl req -new -key vsftpd.key -out vsftpd.csr
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [XX]:CN
+State or Province Name (full name) []:sc
+Locality Name (eg, city) [Default City]:cd
+Organization Name (eg, company) [Default Company Ltd]:acdiost
+Organizational Unit Name (eg, section) []:acdiost
+Common Name (eg, your name or your server's hostname) []:acdiost.com
+Email Address []:your@gmail.com
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:不设置，调用证书需解密。
+An optional company name []:不设置
+# 生成证书
+openssl x509 -req -days 365 -sha256 -in vsftpd.csr -signkey vsftpd.key -out vsftpd.crt
+# 证书文件权限修改
+chmod -R 500 vsftpd.*
+
+```
+
+​      
+
+2. 修改配置文件
+
+```bash
+# 启用ssl
+ssl_enable=YES
+# 开启tls、ssl支持
+ssl_tlsv1=YES
+ssl_sslv2=YES
+ssl_sslv3=YES
+# 允许匿名和虚拟用户使用ssl
+allow_anon_ssl=YES
+# 强制匿名和虚拟用户登录传输使用ssl
+force_anon_logins_ssl=YES
+force_anon_data_ssl=YES
+# 强制本地用户登录传输使用ssl
+force_local_logins_ssl=YES
+force_local_data_ssl=YES
+# rsa证书位置
+rsa_cert_file=/etc/ssl/certs/vsftpd.crt
+# rsa密钥位置
+rsa_private_key_file=/etc/ssl/certs/vsftpd.key
+```
+
+3. 重启服务
+
+### 配置加密后的问题：
+
+- windows上显示ftp文件夹错误
+
+- Linux上提示：530 Non-anonymous sessions must use encryption.
+
+Linux命令行版本和Windows资源管理器不支持加密访问，需要使用支持加密的客户端进行访问如：**FileZilla**
+
+
+
+如需命令行版本或Windows资源管理器访问`ssl_enable=NO`即可
