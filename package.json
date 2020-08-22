@@ -6,6 +6,9 @@
     "version": "3.9.0"
   },
   "dependencies": {
+    "@midwayjs/decorator": "^2.0.16",
+    "@midwayjs/faas": "^0.3.0",
+    "@midwayjs/faas-middleware-static-file": "^0.0.3",
     "hexo": "^3.9.0",
     "hexo-deployer-git": "^2.1.0",
     "hexo-generator-archive": "^0.1.5",
